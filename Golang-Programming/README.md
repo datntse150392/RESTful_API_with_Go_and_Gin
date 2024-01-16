@@ -107,3 +107,77 @@ const {
   SMALL = BIG >> 99
 }
 ```
+
+### FOR CONTINUED
+
+```
+//
+package main
+
+import "fmt"
+
+func main() {
+	sum := 0
+  // Không cần phải có giấu () ở for
+	for i := 0; i < 10; i++ {
+		sum += i
+	}
+	fmt.Println(sum)
+
+  // Ở ngôn ngữ Go không có từ khóa while
+  sum := 1
+  for sum < 1000 {
+    sum += sum
+  }
+	fmt.Println(sum)
+
+  // Forever
+  for {
+    // Như này đã là vòng lặp vô tận
+  }
+}
+```
+
+### IF ELSE
+
+```
+func pow(x, n, lim float64) float64 {
+	v := math.Pow(x,n)
+	if v < lim {
+		return v
+	} else {
+		return 0
+	}
+}
+```
+
+### SWITCH CASE
+
+```
+	switch os:= runtime.GOOS; os {
+	case "darwin": fmt.Println("macOS")
+	case "linux": fmt.Println("Linux")
+	default:
+		fmt.Printf("%s", os)
+	}
+  t:= time.Now()
+	switch{
+		case t.Hour() < 12: fmt.Println("Good Morning")
+		case t.Hour() < 12: fmt.Println("Good Afternoon")
+		default: fmt.Println("Good Evening")
+	}
+```
+
+### DEFER
+
+```
+// Từ khóa defer chỉ có ngôn ngữ Go mới có, thì việc thêm defer này nhằm để thực thi một func, một biến trước func exit của chương trình
+  defer fmt.Printf(os)
+  fmt.Printf("Hello world!")
+// Thì console sẽ xuất hiện Hello world trước và fmt.Printf(os) sẽ print ra trước khi chương trình exit
+// Tác vụ của nó ví dụ như các bạn mở một file hay stream thì đó ra thì cuối chương trình thì phải close nó lại
+// Và nó mang tính chất stacking => Last in fist out
+```
+
+![Alt text](image-5.png)
+</br>

@@ -2,22 +2,40 @@ package main
 
 import (
 	"fmt"
+	"math"
+	"runtime"
+	"time"
 )
 
-func swap(x , y string) (string, string) {
-	return y, x
+func pow(x, n, lim float64) float64 {
+	v := math.Pow(x,n)
+	if v < lim {
+		return v
+	} else {
+		return 0
+	}
 }
 
-
-
-
 func main() {
-	a,b := swap("hello", "world")
-	fmt.Println(a,b)
+	sum := 0
+	for i := 0; i < 10; i++ {
+		sum += i
+	}
+	fmt.Println(sum)
 
-	// Khai báo biến có 2 cách
-	var i,j int = 1,2
-	// Biến python sẽ tự hiểu type của biến
-	python := "short"
-	fmt.Println(i,j,python)
+	fmt.Println(pow(3,2,10))
+
+	switch os:= runtime.GOOS; os {
+	case "darwin": fmt.Println("macOS")
+	case "linux": fmt.Println("Linux")
+	default: 
+		fmt.Println(os)
+	}
+
+	t:= time.Now()
+	switch{
+		case t.Hour() < 12: fmt.Println("Good Morning")
+		case t.Hour() < 12: fmt.Println("Good Afternoon")
+		default: fmt.Println("Good Evening")
+	}
 }
