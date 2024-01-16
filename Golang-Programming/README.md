@@ -13,3 +13,97 @@
 5. Tương Thích Với Các Hệ Thống Đóng Gói Khác: go mod cung cấp khả năng tương thích tốt với các hệ thống quản lý gói của ngôn ngữ lập trình khác, giúp dễ dàng tích hợp trong các hệ thống phức tạp. </br>
 
 6. Đơn Giản Hóa Quy Trình Xây Dựng và Phát Triển: Việc sử dụng go mod giúp đơn giản hóa quy trình xây dựng và phát triển, vì các nhà phát triển không cần phải lo lắng về việc cài đặt và cấu hình thủ công các thư viện. </br>
+
+## PACKAGE
+
+1. Bất kì chương trình nào cũng đều xây dựng từ những packages. </br>
+2. Tên các package sẽ bất buộc phải viết thường, không được viết hoa.
+
+## IMPORT
+
+1. Ngôn ngữ Go không được dùng giấu ;
+
+## EXPORTED NAMES
+
+1. Giống như là một biến từ một package khác gọi vào. Ví dụ hàm Println sẽ xây dựng ở package và ở package main gọi hàm này. </br>
+2. Các exported names sẽ phải viết hoa.
+   ![Ví dụ](image-1.png)
+   </br>
+
+## FUNCTIONS
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+func swap(x , y string) (string, string) {
+	return y, x
+}
+
+func main() {
+	a,b := swap("hello", "world")
+	fmt.Println(a,b)
+}
+```
+
+</br>
+
+### VARIABLES
+
+```
+	// Khai báo biến có 2 cách
+	var i,j int = 1,2
+	// Biến python sẽ tự hiểu type của biến
+	python := "short"
+	fmt.Println(i,j,python)
+```
+
+### BASIC TYPE
+
+```
+Kiểu dữ liệu ở Go khá là chi tiết vì Go là ngôn ngữ ~~ ngôn ngữ máy như C, C++
+```
+
+### ZERO VALUES
+
+```
+0 for numeric types,
+false for the boolean typ
+"" for strings
+
+fx:
+var i int
+var f float 64
+var b bool
+var s tring
+```
+
+### TYPE CONVERSIONNS
+
+```
+// Ép kiểu
+var i int = 42
+var f float64 =  float(i)
+```
+
+### TYPE INFERENCE
+
+```
+var i int,
+k := 2 // k is an int
+```
+
+### CONSTANTS
+
+```
+const PI = 3.14
+// constant cannot be declared using the := systax
+
+const {
+  BIG = 1 << 100
+  SMALL = BIG >> 99
+}
+```
