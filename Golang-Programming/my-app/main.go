@@ -1,41 +1,16 @@
 package main
 
-import (
-	"fmt"
-	"math"
-	"runtime"
-	"time"
-)
-
-func pow(x, n, lim float64) float64 {
-	v := math.Pow(x,n)
-	if v < lim {
-		return v
-	} else {
-		return 0
-	}
-}
+import "fmt"
 
 func main() {
-	sum := 0
-	for i := 0; i < 10; i++ {
-		sum += i
-	}
-	fmt.Println(sum)
+var a *int
+b := 10
+a = &b
 
-	fmt.Println(pow(3,2,10))
+c:= 2701
+fmt.Println("a:", a) // In ra giá trị ô nhớ của biến a
+fmt.Println("a:", *a) // In ra giá trị của biến b thông qua con trỏ a
+a = &c;
+fmt.Println("a:", *a) // In ra giá trị ô nhớ của biến a
 
-	switch os:= runtime.GOOS; os {
-	case "darwin": fmt.Println("macOS")
-	case "linux": fmt.Println("Linux")
-	default: 
-		fmt.Println(os)
-	}
-
-	t:= time.Now()
-	switch{
-		case t.Hour() < 12: fmt.Println("Good Morning")
-		case t.Hour() < 12: fmt.Println("Good Afternoon")
-		default: fmt.Println("Good Evening")
-	}
 }

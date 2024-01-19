@@ -181,3 +181,19 @@ func pow(x, n, lim float64) float64 {
 
 ![Alt text](image-5.png)
 </br>
+
+# Lập trình Golang #4: Pointer, Struct, Slice và Map
+
+### POINTER
+
+```
+// Là một Pointer tường minh
+var p *int
+i:= 42
+p = &i
+
+// Unlike C, Go has no pointer arithmetic
+
+// Pointer dùng mọi nơi trong Golang
+
+```
