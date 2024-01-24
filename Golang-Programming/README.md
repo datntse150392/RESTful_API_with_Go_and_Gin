@@ -252,3 +252,11 @@ func main() {
 	fmt.Print(a)
 }
 ```
+
+### SLICEs
+
+```
+// Được hiểu đơn giản là một mảng được cắt ra
+// Khai báo slice khác ở khai báo mảng là slices khai báo trước type là một ngoặc vuông rỗng []
+// Fx: var s []int = primes[1:4] Lấy từ phần tử thứ 2 đến thứ 5 vì index đếm từ 0
+```
