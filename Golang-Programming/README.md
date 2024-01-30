@@ -253,10 +253,25 @@ func main() {
 }
 ```
 
-### SLICEs
+### SLICES
 
 ```
 // Được hiểu đơn giản là một mảng được cắt ra
 // Khai báo slice khác ở khai báo mảng là slices khai báo trước type là một ngoặc vuông rỗng []
 // Fx: var s []int = primes[1:4] Lấy từ phần tử thứ 2 đến thứ 5 vì index đếm từ 0
+```
+
+### SLICES LENGTH & CAPACITY
+
+```
+// Lengh là độ dài thực của mảng đó
+// Capacity là độ rộng của mảng đó
+// Giả sử như khi không có capacity thì khi thêm 1 phần tử mới thì sẽ phải tạo ra 1 ô nhớ chứa mảng đó có lengh + 1 và sao chép toàn bộ mảng cũ qua mảng mới và thêm phần tử mới vào
+// Khi có capacity thì không cần phải lo về vấn đề cấp phát thêm ô nhớ mới
+
+// Có 1 hàm make để tạo slice với 3 tham số []type, len, cap
+// Fx1:
+ a:= make([]int, 5) // chỉ khai báo có length
+ b:= make([]int, 0, 5) // có đầy đủ 3 tham số type, lengh, capacity
+
 ```
