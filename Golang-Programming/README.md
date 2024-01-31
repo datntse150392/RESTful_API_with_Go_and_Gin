@@ -275,3 +275,10 @@ func main() {
  b:= make([]int, 0, 5) // có đầy đủ 3 tham số type, lengh, capacity
 
 ```
+
+### SLICES OF SLICES
+
+```
+// Slices can contain any type, including other slices
+
+```

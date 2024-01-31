@@ -1,19 +1,18 @@
 package main
 
+import "fmt"
+
 func main() {
-	a := make([]int, 5)
-	println("a", a)
+	board := [][]string{
+		[]string{"_", "_", "_"},
+		[]string{"_", "_", "_"},
+		[]string{"_", "_", "_"},
+	}
 
-	b := make([]int, 0, 10)
-	println("b", b)
+	board[0][0] = "X"
+	board[0][1] = "Y"
+	board[0][2] = "Z"
 
-	c := b[0:2]
-	println("c", c)
 
-	d := c[2:5]
-	println("d", d)
-
-	e := d[2:5]
-	println("e", e)
-
+	fmt.Println(board)
 }
