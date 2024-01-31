@@ -3,16 +3,27 @@ package main
 import "fmt"
 
 func main() {
-	board := [][]string{
-		[]string{"_", "_", "_"},
-		[]string{"_", "_", "_"},
-		[]string{"_", "_", "_"},
-	}
+	var s []int
+	printSlice(s)
 
-	board[0][0] = "X"
-	board[0][1] = "Y"
-	board[0][2] = "Z"
+	// The slice grows on nil slices
+	s = append(s, 0)
+	printSlice(s)
 
+	// The slice grows as needed
+	s = append(s, 1)
+	printSlice(s)
 
-	fmt.Println(board)
+	// We can add more than one element at a time
+	s = append(s, 2,3,4,5,6)
+	printSlice(s)
+
+	s = append(s, 8,9,0)
+	printSlice(s)
+
+	// => Tóm lại là hàm append() sẽ tạo ra một slice mới và copy các phần tử từ slice cũ sang slice mới
+}
+
+func printSlice(s []int) {
+	fmt.Println("len=%d cap=%d %v\n", len(s), cap(s), s)
 }

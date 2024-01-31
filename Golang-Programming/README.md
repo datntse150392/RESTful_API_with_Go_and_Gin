@@ -280,5 +280,10 @@ func main() {
 
 ```
 // Slices can contain any type, including other slices
+```
 
+### Appending to a slice
+
+```
+// Hàm append sẽ return về một slices mới tức là sẽ sinh ra một ô nhớ mới
 ```
