@@ -1,32 +1,37 @@
 package main
 
-import "fmt"
-
-type Vertex struct {
-	Lat, Log float64
-}
-
-var m map[string]Vertex
+import (
+	"fmt"
+	"math"
+)
 
 func main() {
-	m = make(map[string]Vertex)
-	m["Bell Labs"] = Vertex{
-		40.68433, -74.39967,
+	hypot := func(x, y float64) float64 {
+		return math.Sqrt(x*x + y*y)
 	}
-	fmt.Println(m["Bell Labs"])
+	println(hypot(5, 2))
 
-	n := make(map[string]int)
-	n["Answer"] = 42
-	fmt.Println("The value:", n["Answer"])
+	fmt.Println(compute(math.Pow))
 
-	n["Answer"] = 48
-	fmt.Println("The value:", n["Answer"])
+	pos, reg := adder(), adder()
+	for i := 0; i < 10; i++ {
+		fmt.Println(
+			pos(i),
+			reg(-2*i),
+		)
+	}
 
-	delete(n, "Answer")
-	fmt.Println("The value:", n["Answer"])
+	// => Function closure được hiểu là trong một block code, có một function được khai báo trên trong một function khác thì function được khai báo sẽ có thể tham chiếu biến biến ở bên ngoài function nhưng trong phạm vi block code đó thôi
+}
 
-	v, ok := m["Answer"]
-	fmt.Println("The value:", v, "Present?", ok)
+func compute(fn func(float64, float64) float64) float64 {
+	return fn(4, 2)
+}
 
-	// => khi delete thì sẽ xóa key đó luôn
+func adder() func(int) int {
+	sum := 0;
+	return func(x int) int {
+		sum += x
+		return sum
+	}
 }

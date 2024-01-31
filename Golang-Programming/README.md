@@ -319,3 +319,9 @@ for _,v := range a {
 ```
 // Map ở đây sẽ tương đối giống như các ngôn ngữ khác chỉ có điều là syntax có thôi phức tạp
 ```
+
+### Functions value & Functions closure
+
+```
+
+```
