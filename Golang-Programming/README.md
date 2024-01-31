@@ -313,3 +313,9 @@ for _,v := range a {
 	// thì ở đây v chỉ sẽ lấy value và sẽ bỏ qua index
 }
 ```
+
+### MAP
+
+```
+// Map ở đây sẽ tương đối giống như các ngôn ngữ khác chỉ có điều là syntax có thôi phức tạp
+```
