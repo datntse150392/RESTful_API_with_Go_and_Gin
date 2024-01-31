@@ -287,3 +287,29 @@ func main() {
 ```
 // Hàm append sẽ return về một slices mới tức là sẽ sinh ra một ô nhớ mới
 ```
+
+### For range
+
+```
+// Cũng như là một vòng lặp bên các ngôn ngữ khác nhưng đây là sẽ duyệt qua các phần tử trong mảng
+// Fx:
+	a := []int{1,2,4,8,16,32,64,128}
+	for i,v range a {
+		printf("2**%d == %d\n", i,v)
+		// i là index và v là value
+	}
+	// => thì đoạn code trên sẽ được duyệt theo như nhau
+	// => vòng lặp thứ 1, i = 0, v = 1
+	// => vòng lặp thứ 2, i = 1, v = 2
+	// => vòng lặp thứ 3, i = 2, v = 4
+
+// Fx2:
+for i := range a {
+	// thì i ở đây sẽ được hiểu chỉ là index ví dụ như 0,1,2,3,4,5,6
+}
+
+// Fx3: muốn sử dụng chỉ value và không muốn sử dụng index thì xem ví dụ sau:
+for _,v := range a {
+	// thì ở đây v chỉ sẽ lấy value và sẽ bỏ qua index
+}
+```
