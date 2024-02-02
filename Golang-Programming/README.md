@@ -345,4 +345,16 @@ func main() {
 	println(v.Abs())
 }
 
+// Pointer receiver
+1. Có thể thấy khi dùng method và function thì nó sẽ có những chỗ khác như sau:
++ Method được thu đúng phạm vi của nó, phụ thuộc vào thằng receiver
+=> func (v Vertex) Abs() float { /// logic} Method
+=> func Abs(v Vertex) { /// logic} Function
+
+2. Khi dùng chúng ta dùng pointer receiver
++ Thay đổi trạng thái của đối tượng: Khi bạn muốn thay đổi trạng thái của đối tượng trong phương thức, bạn thường sử dụng receiver con trỏ để tham chiếu trực tiếp đến đối tượng gốc. Khi bạn sử dụng receiver tham trị, một bản sao của đối tượng được tạo ra và các thay đổi chỉ áp dụng cho bản sao đó.
+
++ Hiệu suất và tài nguyên: Sử dụng con trỏ thường hiệu quả hơn trong việc truy cập và chỉnh sửa dữ liệu lớn hoặc khi tạo và di chuyển các đối tượng lớn. Truy cập trực tiếp thông qua con trỏ thường nhanh hơn so với sao chép toàn bộ đối tượng.
+
++ Tránh sao chép dữ liệu: Khi bạn sử dụng receiver tham trị, một bản sao của đối tượng được tạo ra và sử dụng trong phương thức. Điều này có thể dẫn đến hiện tượng sao chép dữ liệu không cần thiết, đặc biệt là đối với các cấu trúc dữ liệu lớn.
 ```
