@@ -322,6 +322,27 @@ for _,v := range a {
 
 ### Functions value & Functions closure
 
+### METHOS
+
 ```
+Method cũng như làm một function nhưng scope nó thu nhỏ lại trong giới hạn của 1 receiver
+Fx:
+package main
+
+import "math"
+
+type Vertex struct {
+	X, Y int
+}
+
+// Method
+func (v Vertex) Abs() float64 {
+	return math.Sqrt(float64(v.X)*float64(v.X)+float64(v.Y)*float64(v.Y))
+}
+
+func main() {
+	v := Vertex{1,2}
+	println(v.Abs())
+}
 
 ```
