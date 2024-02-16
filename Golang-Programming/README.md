@@ -358,3 +358,34 @@ func main() {
 
 + Tránh sao chép dữ liệu: Khi bạn sử dụng receiver tham trị, một bản sao của đối tượng được tạo ra và sử dụng trong phương thức. Điều này có thể dẫn đến hiện tượng sao chép dữ liệu không cần thiết, đặc biệt là đối với các cấu trúc dữ liệu lớn.
 ```
+
+### INTERFACE
+
+```
+1. Ở Golang không hỗ trợ chúng ta về OOP nhưng lại cung cấp cho chúng ta một interface để có thể sử dụng build các lớp một cách logic hơn
+2. Interface của Golang sẽ tự động implement chứ không cần phải khai báo implement gì cả
+Fx:
+
+```
+
+### THE EMPTY INTERFACE
+
+```
+The empty interface is any type
+Fx:
+package main
+
+import "fmt"
+
+func main() {
+	var i interface{}
+
+	i = 42
+	fmt.Println(i)
+
+
+	i = "hello"
+	fmt.Println(i)
+}
+
+```
