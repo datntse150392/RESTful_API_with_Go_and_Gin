@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"time"
 )
 func main() {
 	fmt.Println("Hello, World!")
@@ -20,21 +19,28 @@ func main() {
 	ch3 := make(chan int, 10)
 
 	go func() {
-		for i := 0; i < 100; i++ {
+		for i := 0; i < 10; i++ {
 			ch3 <- i
 			fmt.Print("Send: ", i, "\n")
 		}
+		close(ch3)
 	}()
 
-	for i := 0; i < 100; i++ {
-		fmt.Println(<-ch3)
-		time.Sleep(time.Second)
+	for v := range ch3 {
+		fmt.Println("Receive: ", v)
 	}
 
 	/*
-	Giải thích ví dụ trên
-		+ Do khi khai báo channel ch3 đã có buffer 10, tức là có thể nhận 10 slot giá trị trước khi bị block
-		+ Khi gửi giá trị vào channel ch3, nếu channel chưa đầy thì sẽ không bị block
-		+ Khi bắt đầu vòng lặp thứ 11 thì phải đợi lấy giá trị từ channel ch3, nếu channel chưa có giá trị thì sẽ bị block
+		Giải thích close and range
+		close:
+		- Khi một channel được đóng, không thể gửi dữ liệu vào nó nữa
+		- Khi một channel được đóng, vẫn có thể nhận dữ liệu từ nó
+		- Khi một channel được đóng, không thể đóng nó lần nữa
+		- Khi một channel được đóng, không thể mở nó lên
+
+		range:
+		- range trên channel sẽ lặp qua tất cả các phần tử trong channel cho đến khi channel đóng
+		- Khi channel đóng, range sẽ dừng lặp
 	*/
+
 }
