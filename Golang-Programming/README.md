@@ -389,3 +389,11 @@ func main() {
 }
 
 ```
+
+### TYPE ASSERTIONS
+
+```
+Giả sử bạn muốn lấy ra và kiểm tra xem type của interface đó thì đó được gọi là type assertions
+Fx:
+
+```

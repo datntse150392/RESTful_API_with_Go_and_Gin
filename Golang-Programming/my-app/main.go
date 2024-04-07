@@ -1,14 +1,23 @@
 package main
 
-import "fmt"
-
+import (
+	"fmt"
+)
 func main() {
-	var i interface{}
+	fmt.Println("Hello, World!")
+	// ch := make (chan int)
 
-	i = 42
-	fmt.Println(i)
+	// VD1:
+	// fmt.Print("VD1:", <-ch)
 
+	// VD2: 
+	ch2 := make(chan int)
 
-	i = "hello"
-	fmt.Println(i)
+	go func () {
+		ch2 <- 1
+	}()
+
+	// ch2 <- 2
+	fmt.Print("VD2:", <-ch2)
+
 }
