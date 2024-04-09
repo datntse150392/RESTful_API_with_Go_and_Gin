@@ -7,20 +7,26 @@ import (
 )
 
 func main() {
-	count := 0
 
-	lock := new(sync.Mutex)
+	wg := new(sync.WaitGroup)
 
-	for i := 1; i <= 10; i++ {
+	n := 10000
+	queueCh := make(chan int, n)
+	maxWorkers := 5
 
+	for i := 1; i <= n; i++ {
+		queueCh <- i
+	}
+
+	for i := 1; i <= maxWorkers; i++ {
+		wg.Add(1)
 		go func() {
-			for j := 1; j <= 1000; j++ {
-				lock.Lock()
-				count++
-				fmt.Println(count)
-				lock.Unlock()
+			for v := range queueCh {
+				time.Sleep(20 * time.Microsecond)
+				fmt.Println("Processing job", v)
 			}
+			wg.Done()
 		}()
 	}
-	time.Sleep(time.Second * 5)
+	wg.Wait()
 }
