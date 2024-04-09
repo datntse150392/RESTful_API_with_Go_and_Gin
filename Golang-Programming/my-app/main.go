@@ -1,57 +1,26 @@
 package main
 
 import (
+	"fmt"
+	"sync"
 	"time"
 )
 
-func fibonacci(c, quit chan int) {
-	x, y := 0, 1
-	for {
-		select {
-		case c <- x:
-			x, y = y, x+y
-		case <-quit:
-			println("quit")
-			return
-		}
-	}
-
-}
-
 func main() {
+	count := 0
 
-	// Fx 1
-	ch1 := make(chan int)
-	ch2 := make(chan int)
+	lock := new(sync.Mutex)
 
-	go func (){
-		time.Sleep(2 * time.Second)
-		ch1 <- 1
-	}()
+	for i := 1; i <= 10; i++ {
 
-	go func (){
-		time.Sleep(1 * time.Second)
-		ch2 <-2
-	}()
-
-	// fmt.Print("ch1", <-ch1)
-	// fmt.Print("ch2", <-ch2)	
-	select{
-	case v1 := <-ch1: 
-		println("ch1", v1)
-	case v2 := <-ch2:
-		println("ch2", v2)
+		go func() {
+			for j := 1; j <= 1000; j++ {
+				lock.Lock()
+				count++
+				fmt.Println(count)
+				lock.Unlock()
+			}
+		}()
 	}
-
-	// Fx2
-	c := make(chan int)
-	quit := make(chan int)
-
-	go func() {
-		for i := 0; i < 10; i++ {
-			println(<-c)
-		}
-		quit <- 0
-	}()
-	fibonacci(c, quit)
+	time.Sleep(time.Second * 5)
 }
