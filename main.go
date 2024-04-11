@@ -1,8 +1,8 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
+	"github.com/gin-gonic/gin"
+	"net/http"
 	"time"
 )
 
@@ -27,11 +27,11 @@ func main() {
 		UpdatedAt:   &now,
 	}
 
-	jsonData, err := json.Marshal(item)
-
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Println(string(jsonData))
+	r := gin.Default()
+	r.GET("/ping", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"message": item,
+		})
+	})
+	r.Run(":3000") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
