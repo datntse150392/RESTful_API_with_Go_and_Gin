@@ -69,7 +69,7 @@ func main() {
 			items.GET("")
 			items.GET("/:id", GetDetailItem(db))
 			items.PUT("/:id", UpdateItem(db))
-			items.DELETE("/:id")
+			items.DELETE("/:id", DeleteITem(db))
 		}
 	}
 	r.Run(":3000") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
@@ -155,6 +155,33 @@ func UpdateItem(db *gorm.DB) func(*gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"stats": http.StatusOK,
 			"data":  "Updated",
+		})
+	}
+}
+
+// Soft Delete
+func DeleteITem(db *gorm.DB) func(*gin.Context) {
+	return func(c *gin.Context) {
+		id, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"err": err.Error(),
+			})
+			return
+		}
+
+		// Ví dụ ở đây không có truyền tham chiếu đến struct data thì làm sao nó biết được table name của mình ?
+		if err := db.Table(TodoItem{}.TableName()).Where("id = ?", id).Updates(map[string]interface{}{
+			"status": "Deleted",
+		}).Error; err != nil {
+			c.JSON(http.StatusNotFound, gin.H{
+				"err": err.Error(),
+			})
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"status": http.StatusOK,
+			"data":   "Deleted",
 		})
 	}
 }
