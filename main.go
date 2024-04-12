@@ -15,8 +15,8 @@ import (
 type TodoItem struct {
 	Id          int        `json:"id" gorm:"column:id;"`
 	Title       string     `json:"title" gorm:"column:title;"`
-	Description string     `json:"description" gorm:"column: description;"`
-	Status      string     `json:"status" gorm:"column: status;"`
+	Description string     `json:"description" gorm:"column:description;"`
+	Status      string     `json:"status" gorm:"column:status;"`
 	CreatedAt   *time.Time `json:"created_at" gorm:"column:created_at;"`
 	UpdatedAt   *time.Time `json:"updated_at" gorm:"column: updated_at;"`
 }
@@ -45,6 +45,23 @@ type TodoItemUpdate struct {
 func (TodoItemUpdate) TableName() string {
 	return TodoItem{}.TableName()
 }
+
+type Paging struct {
+	Page  int   `json:"page" form:"page"`
+	Limit int   `json:"limit" form:"limit"`
+	Total int64 `json:"total" form:"-"`
+}
+
+func (p *Paging) Process() {
+	if p.Page <= 0 {
+		p.Page = 1
+	}
+
+	if p.Limit <= 0 || p.Limit >= 100 {
+		p.Limit = 10
+	}
+}
+
 func main() {
 	dsn := os.Getenv("DB_CONN_STR")
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
@@ -66,7 +83,7 @@ func main() {
 		items := v1.Group("/items")
 		{
 			items.POST("", CreateItem(db))
-			items.GET("")
+			items.GET("", GetListItems(db))
 			items.GET("/:id", GetDetailItem(db))
 			items.PUT("/:id", UpdateItem(db))
 			items.DELETE("/:id", DeleteITem(db))
@@ -182,6 +199,46 @@ func DeleteITem(db *gorm.DB) func(*gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"status": http.StatusOK,
 			"data":   "Deleted",
+		})
+	}
+}
+
+func GetListItems(db *gorm.DB) func(*gin.Context) {
+	return func(c *gin.Context) {
+		var paging Paging
+
+		if err := c.ShouldBind(&paging); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"err": err.Error(),
+			})
+			return
+		}
+
+		paging.Process()
+
+		var result []TodoItem
+
+		db = db.Where("status <> ?", "Deleted")
+
+		if err := db.Table(TodoItem{}.TableName()).Count(&paging.Total).Error; err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"err": err.Error(),
+			})
+			return
+		}
+
+		if err := db.Table(TodoItem{}.TableName()).Order("id desc").Offset((paging.Page - 1) * paging.Limit).
+			Limit(paging.Limit).
+			Find(&result).Error; err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"err": err.Error(),
+			})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"data":  result,
+			"total": paging.Total,
 		})
 	}
 }
