@@ -19,6 +19,15 @@ type TodoItem struct {
 	CreatedAt   *time.Time `json:"created_at"`
 	UpdatedAt   *time.Time `json:"updated_at"`
 }
+type TodoItemCreation struct {
+	Id          int    `json:"-" gorm:"column:id;"`
+	Title       string `json:"title" gorm:"column:title"`
+	Description string `json:"description" gorm:"column:description"`
+}
+
+func (TodoItemCreation) TableName() string {
+	return "todo_items"
+}
 
 func main() {
 	dsn := os.Getenv("DB_CONN_STR")
@@ -51,7 +60,7 @@ func main() {
 	{
 		items := v1.Group("/items")
 		{
-			items.POST("")
+			items.POST("", CreateItem(db))
 			items.GET("")
 			items.GET("/:id")
 			items.PUT("/:id")
@@ -64,4 +73,29 @@ func main() {
 		})
 	})
 	r.Run(":3000") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+}
+
+func CreateItem(db *gorm.DB) func(*gin.Context) {
+	return func(c *gin.Context) {
+		var data TodoItemCreation
+
+		if err := c.ShouldBind(&data); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"err": err.Error(),
+			})
+			return
+		}
+
+		if err := db.Create(&data).Error; err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"err": err.Error(),
+			})
+
+			return
+		}
+
+		c.JSON(http.StatusCreated, gin.H{
+			"data": data,
+		})
+	}
 }
