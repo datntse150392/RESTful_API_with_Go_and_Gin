@@ -12,11 +12,19 @@ import (
 	"time"
 )
 
+const (
+	StatusDone    Status = "Done"
+	StatusDoing   Status = "Doing"
+	StatusDeleted Status = "Deleted"
+)
+
+type Status string
+
 type TodoItem struct {
 	Id          int        `json:"id" gorm:"column:id;"`
 	Title       string     `json:"title" gorm:"column:title;"`
 	Description string     `json:"description" gorm:"column:description;"`
-	Status      string     `json:"status" gorm:"column:status;"`
+	Status      *Status    `json:"status" gorm:"column:status;"`
 	CreatedAt   *time.Time `json:"created_at" gorm:"column:created_at;"`
 	UpdatedAt   *time.Time `json:"updated_at" gorm:"column: updated_at;"`
 }
