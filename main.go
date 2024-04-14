@@ -2,6 +2,8 @@ package main
 
 import (
 	"RESTful_API_with_Go_and_Gin/common"
+	"RESTful_API_with_Go_and_Gin/modules/item/model"
+	"RESTful_API_with_Go_and_Gin/services/item"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
@@ -11,47 +13,6 @@ import (
 	"os"
 	"strconv"
 )
-
-const (
-	StatusDone    Status = "Done"
-	StatusDoing   Status = "Doing"
-	StatusDeleted Status = "Deleted"
-)
-
-type Status string
-
-type TodoItem struct {
-	common.SQLModel
-	Title       string  `json:"title" gorm:"column:title;"`
-	Description string  `json:"description" gorm:"column:description;"`
-	Status      *Status `json:"status" gorm:"column:status;"`
-}
-
-func (TodoItem) TableName() string {
-	return "todo_items"
-}
-
-type TodoItemCreation struct {
-	Id          int     `json:"-" gorm:"column:id;"`
-	Title       string  `json:"title" gorm:"column:title"`
-	Description string  `json:"description" gorm:"column:description"`
-	Status      *Status `json:"status" gorm:"column:status;"`
-}
-
-func (TodoItemCreation) TableName() string {
-	return TodoItem{}.TableName()
-}
-
-type TodoItemUpdate struct {
-	Id          int     `json:"-" gorm:"column:id;"`
-	Title       *string `json:"title" gorm:"column:title"`
-	Description *string `json:"description" gorm:"column:description"`
-	Status      *string `json:"status" gorm:"column:status"`
-}
-
-func (TodoItemUpdate) TableName() string {
-	return TodoItem{}.TableName()
-}
 
 func main() {
 	dsn := os.Getenv("DB_CONN_STR")
@@ -73,7 +34,7 @@ func main() {
 	{
 		items := v1.Group("/items")
 		{
-			items.POST("", CreateItem(db))
+			items.POST("", item.CreateItem(db))
 			items.GET("", GetListItems(db))
 			items.GET("/:id", GetDetailItem(db))
 			items.PUT("/:id", UpdateItem(db))
@@ -85,7 +46,7 @@ func main() {
 
 func CreateItem(db *gorm.DB) func(*gin.Context) {
 	return func(c *gin.Context) {
-		var data TodoItemCreation
+		var data model.TodoItemCreation
 
 		if err := c.ShouldBind(&data); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
@@ -108,7 +69,7 @@ func CreateItem(db *gorm.DB) func(*gin.Context) {
 
 func GetDetailItem(db *gorm.DB) func(ctx *gin.Context) {
 	return func(c *gin.Context) {
-		var data TodoItem
+		var data model.TodoItem
 
 		id, err := strconv.Atoi(c.Param("id"))
 
@@ -134,7 +95,7 @@ func GetDetailItem(db *gorm.DB) func(ctx *gin.Context) {
 
 func UpdateItem(db *gorm.DB) func(*gin.Context) {
 	return func(c *gin.Context) {
-		var data TodoItemUpdate
+		var data model.TodoItemUpdate
 
 		id, err := strconv.Atoi(c.Param("id"))
 
@@ -171,7 +132,7 @@ func DeleteITem(db *gorm.DB) func(*gin.Context) {
 		}
 
 		// Ví dụ ở đây không có truyền tham chiếu đến struct data thì làm sao nó biết được table name của mình ?
-		if err := db.Table(TodoItem{}.TableName()).Where("id = ?", id).Updates(map[string]interface{}{
+		if err := db.Table(model.TodoItem{}.TableName()).Where("id = ?", id).Updates(map[string]interface{}{
 			"status": "Deleted",
 		}).Error; err != nil {
 			c.JSON(http.StatusNotFound, gin.H{
@@ -196,18 +157,18 @@ func GetListItems(db *gorm.DB) func(*gin.Context) {
 
 		paging.Process()
 
-		var result []TodoItem
+		var result []model.TodoItem
 
 		db = db.Where("status <> ?", "Deleted")
 
-		if err := db.Table(TodoItem{}.TableName()).Count(&paging.Total).Error; err != nil {
+		if err := db.Table(model.TodoItem{}.TableName()).Count(&paging.Total).Error; err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"err": err.Error(),
 			})
 			return
 		}
 
-		if err := db.Table(TodoItem{}.TableName()).Order("id desc").Offset((paging.Page - 1) * paging.Limit).
+		if err := db.Table(model.TodoItem{}.TableName()).Order("id desc").Offset((paging.Page - 1) * paging.Limit).
 			Limit(paging.Limit).
 			Find(&result).Error; err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
